@@ -6,9 +6,16 @@ import User from '@/models/User';
 import mongoose from 'mongoose';
 import { getServerSession } from '@/lib/auth/serverAuth';
 
+// Updated RouteContext type for Next.js 13+ App Router
+type RouteContext = {
+  params: Promise<{
+    id: string;
+  }>;
+};
+
 export async function GET(
   request: Request,
-  context: { params: { id: string } }
+  context: RouteContext
 ) {
   try {
     const session = await getServerSession();
@@ -22,8 +29,10 @@ export async function GET(
 
     await connectToDatabase();
     
-    // Get the ID from context params - PROPERLY AWAITED
-    const id = context.params.id;
+    // Await the params Promise to get the actual parameters
+    const params = await context.params;
+    const id = params.id;
+    
     if (!id) {
       return NextResponse.json(
         { success: false, message: 'Meet ID is required' },
@@ -66,7 +75,7 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  context: { params: { id: string } }
+  context: RouteContext
 ) {
   try {
     const session = await getServerSession();
@@ -78,8 +87,9 @@ export async function PUT(
       );
     }
 
-    // Properly access the id parameter
-    const id = context.params.id;
+    // Await the params Promise to get the actual parameters
+    const params = await context.params;
+    const id = params.id;
     const body = await request.json();
     
     await connectToDatabase();
