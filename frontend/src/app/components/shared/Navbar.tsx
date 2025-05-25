@@ -3,7 +3,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { 
   Menu, Home, User, Contact, LogOut, CheckCircle, 
-  BookOpen, ClipboardList, ChevronDown, X 
+  BookOpen, ClipboardList, ChevronDown, X, 
+  Map
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -42,10 +43,12 @@ const Navbar: React.FC = () => {
   ];
 
   const ProfileLinks = [
+    { href: '/dashboard', icon: User, label: 'My Profile', color: 'text-blue-700' },
+    { href: '/roadmap', icon: Map, label: 'My Roadmaps', color: 'text-red-600' },
     { href: '/progress', icon: CheckCircle, label: 'Check Progress', color: 'text-blue-600' },
     { href: '/mentorship', icon: BookOpen, label: 'Mentorship', color: 'text-green-600' },
     { href: '/quizzes', icon: ClipboardList, label: 'Quizzes', color: 'text-purple-600' },
-    { href: '/assignments', icon: ClipboardList, label: 'Assignments', color: 'text-orange-600' }
+    { href: '/assignments', icon: ClipboardList, label: 'Assignments', color: 'text-orange-600' },
   ];
 
   return (
@@ -63,7 +66,7 @@ const Navbar: React.FC = () => {
               href="/" 
               className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transition duration-300 ease-in-out transform hover:scale-105"
             >
-              RoadmapPro
+              DevPathFinder
             </Link>
             <div className="hidden md:flex items-center space-x-6">
               {NavLinks.map((link) => (
@@ -121,13 +124,13 @@ const Navbar: React.FC = () => {
                       </Link>
                     ))}
                     <div className="border-t border-gray-100 my-2"></div>
-                    <Link 
-                      href="/Auth" 
-                      className="flex items-center px-6 py-3 text-sm text-red-600 hover:bg-red-50 hover:text-red-800 transition duration-300"
+                    <div
+                      onClick={() => {localStorage.clear(); window.location.href = '/Auth'}}
+                      className="flex items-center px-6 py-3 text-sm text-red-600 hover:bg-red-50 hover:text-red-800 transition duration-300 hover:cursor-pointer"
                     >
                       <LogOut className="mr-3" size={18} /> 
                       <span className="font-medium">Logout</span>
-                    </Link>
+                    </div>
                   </div>
                 </motion.div>
               )}
@@ -205,13 +208,13 @@ const Navbar: React.FC = () => {
                             <span className="font-medium">{link.label}</span>
                           </Link>
                         ))}
-                        <Link 
-                          href="/Auth" 
+                        <div 
+                          onClick={() => {localStorage.clear(); window.location.href = '/Auth'}}
                           className="flex items-center text-sm text-red-600 hover:text-red-800 hover:translate-x-2 transition duration-300"
                         >
                           <LogOut className="mr-3" size={16} /> 
                           <span className="font-medium">Logout</span>
-                        </Link>
+                        </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
